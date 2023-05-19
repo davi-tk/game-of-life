@@ -38,7 +38,7 @@ a:hover {
 
 body {
   margin: 0;
-  display: flex;
+  text-align: center;
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
@@ -77,6 +77,11 @@ button:focus-visible {
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
+}
+
+.cell{
+  width: .5rem;
+  height: .5rem;
 }
 
 @media (prefers-color-scheme: light) {

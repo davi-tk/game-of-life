@@ -1,109 +1,99 @@
 <template lang="">
-    <section id="grid">        
-            <div v-for="(row, index) in grid" :key="index" class = 'flex'>
-                <div v-for="(value, index) in row" :key="index" class = 'cell' :class = "{'bg-slate-600' : value}"></div>
-            </div>
-            
-    </section>
 
-    <button @click = "toggle"> att</button>
-    
+    <!-- <div v-for="(row, index) in grid" :key="index" class = 'flex'>
+        <div v-for="(value, index) in row" :key="index" class = 'cell' :class = "{'bg-slate-600' : value}"></div>
+    </div>       
+
+    <button @click = "toggle">{{isActive}}</button> -->
+
 </template>
 
 <script setup lang = 'js'>
-import { ref, watch } from 'vue';
+// import { ref, onUpdated, watch } from 'vue';
 
-const cols = 50
-const rows = 50
+// const cols = 50
+// const rows = 50
 
-const createMatrix = (cols, rows) => {
-    let matrix = new Array(cols).fill().map(() => Array(rows).fill())
-    return matrix
-}
+// const createMatrix = (cols, rows) => {
+//     let matrix = new Array(cols).fill().map(() => Array(rows).fill())
+//     return matrix
+// }
 
-const livingNeighbors = (matrix, i, j) => {
-    let living = 0
+// const livingNeighbors = (matrix, i, j) => {
+//     let living = 0
 
-    //Make edges linked to its opposite 
-    living += matrix[(i + cols) % cols][(j + 1 + rows) % rows]
-    living += matrix[(i + cols) % cols][(j - 1 + rows) % rows]
-    living += matrix[(i + 1 + cols) % cols][(j + 1 + rows) % rows]
-    living += matrix[(i + 1 + cols) % cols][(j - 1 + rows) % rows]
-    living += matrix[(i + 1 + cols) % cols][(j + rows) % rows]
-    living += matrix[(i - 1 + cols) % cols][(j + 1 + rows) % rows]
-    living += matrix[(i - 1 + cols) % cols][(j - 1 + rows) % rows]
-    living += matrix[(i - 1 + cols) % cols][(j + rows) % rows]
+//     //Make edges linked to its opposite 
+//     living += matrix[(i + cols) % cols][(j + 1 + rows) % rows]
+//     living += matrix[(i + cols) % cols][(j - 1 + rows) % rows]
+//     living += matrix[(i + 1 + cols) % cols][(j + 1 + rows) % rows]
+//     living += matrix[(i + 1 + cols) % cols][(j - 1 + rows) % rows]
+//     living += matrix[(i + 1 + cols) % cols][(j + rows) % rows]
+//     living += matrix[(i - 1 + cols) % cols][(j + 1 + rows) % rows]
+//     living += matrix[(i - 1 + cols) % cols][(j - 1 + rows) % rows]
+//     living += matrix[(i - 1 + cols) % cols][(j + rows) % rows]
 
-    return living
-}
+//     return living
+// }
 
-let matrix = createMatrix(cols, rows)
+// let matrix = createMatrix(cols, rows)
 
-matrix = matrix.map(row => {
-    row = row.map(() => Math.round(Math.random()))
-    return row
-})
+// matrix = matrix.map(row => {
+//     row = row.map(() => Math.round(Math.random()))
+//     return row
+// })
 
-let grid = ref(matrix)
-let isActive = ref(false)
+// let grid = ref(matrix)
+// let isActive = ref(false)
 
-const count_1 = (matrix) => {
-    let count = 0;
+// const toggle = () => {
+//     isActive.value = !isActive.value
+//     updateGrid()
+// }
 
-    for (let i = 0; i < rows; i++) {
-        for (let j = 0; j < cols; j++) {
-            if (matrix[i][j] == 1)
-            count++
-        }
-    }
+// watch(isActive, () => {
+//     console.log(isActive.value)
+// })
 
-    return count
-}
+// const updateGrid = () => {
+//     let descendant = createMatrix(cols, rows)
 
-const toggle = () => {
-    isActive.value = !isActive.value 
-}
+//     for (let i = 0; i < rows; i++) {
+//         for (let j = 0; j < cols; j++) {
+//             const living = livingNeighbors(grid.value, i, j)
+//             const status = grid.value[i][j]
 
-const updateGrid = () => {
-    let descendant = createMatrix(cols, rows)
+//             if (status == 0 && living == 3) {
 
-    for (let i = 0; i < rows; i++) {
-        for (let j = 0; j < cols; j++) {
-            const living = livingNeighbors(grid.value, i, j)
-            const status = grid.value[i][j]
+//                 descendant[i][j] = 1
+//             }
 
-            if (status == 0 && living == 3){
+//             else if (status == 1 && (living < 2 || living > 3)) {
 
-                descendant[i][j] = 1
-            }
+//                 descendant[i][j] = 0
+//             }
 
-            else if (status == 1 && (living < 2 || living > 3)){
+//             else {
 
-                descendant[i][j] = 0
-            }
-
-            else{
-
-                descendant[i][j] = status
-            }
-        }
-    }
-
-    
-    grid.value = descendant
-}
+//                 descendant[i][j] = status
+//             }
+//         }
+//     }
 
 
-    
+//     grid.value = descendant
+// }
 
 
-
+// onUpdated(() => {
+//     console.log('updated')
+//     if (isActive) updateGrid()
+// })
 
 </script>
 
-<style lang="css">
-.cell {
+<style scope lang="css">
+/* .cell {
     width: 1rem;
     height: 1rem;
-}
+} */
 </style>
