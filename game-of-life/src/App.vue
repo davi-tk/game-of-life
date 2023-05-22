@@ -1,6 +1,5 @@
 <script setup>
 import Game from './components/Game.vue';
-import HelloWorld from './components/HelloWorld.vue'
 </script>
 
 <template>

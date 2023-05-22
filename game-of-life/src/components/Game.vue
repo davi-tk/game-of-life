@@ -2,27 +2,51 @@
 
     <section class='w-fit m-auto'>
         
-        <div v-for="(row, i) in grid" :key="i" class = 'flex'>
-            <div v-for="(value, j) in row" :key="j" class = 'cell' :class = "{'bg-slate-600' : grid[i][j]}"></div>
-        </div>       
-    
-        <button @click = "toggle">toggle</button>
+        <div class="bg-neutral-200 rounded">
+            
+            <div v-for="(row, i) in grid" :key="i" class = 'flex'>
+                <div @click = "grid[i][j] ^= 1" @mouseover = "interaction($event, i, j)"  v-for="(value, j) in row" :key="j"
+                 class = 'cell rounded-full ' :class = "{'bg-neutral-900' : grid[i][j]}"></div>
+            </div>       
+        </div>
 
+        <button class="mr-4" v-if="!isActive" @click = "toggle">Start <font-awesome-icon :icon="['fas', 'play']"/></button>
+        <button class="mr-4" v-else @click = toggle>Pause <font-awesome-icon :icon="['fas', 'pause']" /> </button>
+        <button class="m-4" @click = "randomGrid">Randomize <font-awesome-icon :icon="['fas', 'shuffle']" /></button>
+        <button class="m-4" @click = "clear">Clear Grid <font-awesome-icon :icon="['fas', 'eraser']" /></button>
     </section>
+
 
 
 </template>
 
 <script setup lang = 'js'>
 import { ref, watch } from 'vue';
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { faPlay, faPause, faShuffle, faEraser, faL } from '@fortawesome/free-solid-svg-icons'
 
+library.add(faPlay, faPause, faShuffle, faEraser)
 const cols = 50
-const rows = 50
+const rows = 100
 
 const createMatrix = (cols, rows) => {
-    let matrix = new Array(cols).fill().map(() => Array(rows).fill())
+    let matrix = new Array(cols).fill().map(() => Array(rows).fill(0))
     return matrix
 }
+
+const interaction = (e, i, j) => {
+    if (e.buttons == 1 || e.buttons == 3) {
+        grid.value[i][j] ^= 1
+    }
+}
+
+const clear = () => {
+    grid.value = createMatrix(cols, rows)
+    isActive.value = false
+}   
+
+ 
 
 const livingNeighbors = (matrix, i, j) => {
     let living = 0
@@ -40,12 +64,19 @@ const livingNeighbors = (matrix, i, j) => {
     return living
 }
 
-let matrix = createMatrix(cols, rows)
+const randomGrid = () => {
 
-matrix = matrix.map(row => {
-    row = row.map(() => Math.round(Math.random()))
-    return row
-})
+    let newGrid = createMatrix(cols, rows)
+
+    newGrid = newGrid.map(row => {
+        row = row.map(() => Math.round(Math.random()))
+        return row
+    })
+
+    grid.value = newGrid
+}
+
+let matrix = createMatrix(cols, rows)
 
 let grid = ref(matrix)
 let isActive = ref(false)
@@ -58,11 +89,9 @@ const toggle = () => {
     isActive.value = !isActive.value
 }
 
-const update = async() => {
-    console.log('loop')
+const update = async () => {
 
-    while (isActive.value != false){
-        console.log('loop')
+    while (isActive.value != false) {
         await sleep(1)
         grid.value = updateGrid(grid.value)
     }
@@ -72,8 +101,8 @@ watch(isActive, update)
 const updateGrid = (prev) => {
     let descendant = createMatrix(cols, rows)
 
-    for (let i = 0; i < rows; i++) {
-        for (let j = 0; j < cols; j++) {
+    for (let i = 0; i < cols; i++) {
+        for (let j = 0; j < rows; j++) {
             const living = livingNeighbors(prev, i, j)
             const status = prev[i][j]
 
@@ -103,9 +132,10 @@ const updateGrid = (prev) => {
 
 </script>
 
-<style scope lang="css">
+<style scoped lang="css">
 .cell {
-    width: 1rem;
-    height: 1rem;
+    width: .75rem;
+    height: .75rem;
 }
+
 </style>
