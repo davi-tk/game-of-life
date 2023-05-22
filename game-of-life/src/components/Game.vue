@@ -6,7 +6,7 @@
             
             <div v-for="(row, i) in grid" :key="i" class = 'flex'>
                 <div @click = "grid[i][j] ^= 1" @mouseover = "interaction($event, i, j)"  v-for="(value, j) in row" :key="j"
-                 class = 'cell rounded-full ' :class = "{'bg-neutral-900' : grid[i][j]}"></div>
+                 class = 'cell' :class = "{'bg-neutral-900' : grid[i][j]}"></div>
             </div>       
         </div>
 
@@ -14,6 +14,8 @@
         <button class="mr-4" v-else @click = toggle>Pause <font-awesome-icon :icon="['fas', 'pause']" /> </button>
         <button class="m-4" @click = "randomGrid">Randomize <font-awesome-icon :icon="['fas', 'shuffle']" /></button>
         <button class="m-4" @click = "clear">Clear Grid <font-awesome-icon :icon="['fas', 'eraser']" /></button>
+        <button @click = "get_positions(grid)">log</button>
+        <Oscilators :createMatrix='createMatrix' :cols='cols' :rows='rows' @structure='oscilator => grid = oscilator.matrix'/>
     </section>
 
 
@@ -21,6 +23,7 @@
 </template>
 
 <script setup lang = 'js'>
+import Oscilators from './Oscilators.vue';
 import { ref, watch } from 'vue';
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
@@ -98,6 +101,19 @@ const update = async () => {
 }
 watch(isActive, update)
 
+function get_positions(matrix){
+    let pos = []
+    for(let i = 0; i < cols; i++){
+        for(let j = 0; j < rows; j++){
+            if (matrix[i][j] == 1){
+                pos.push([i,j])
+            }
+        }
+    }
+
+   console.log(pos)
+} 
+
 const updateGrid = (prev) => {
     let descendant = createMatrix(cols, rows)
 
@@ -134,8 +150,8 @@ const updateGrid = (prev) => {
 
 <style scoped lang="css">
 .cell {
-    width: .75rem;
-    height: .75rem;
+    width: 1rem;
+    height: 1rem;
 }
 
 </style>
