@@ -81,10 +81,10 @@ button:focus-visible {
   text-align: center;
 }
 
-.cell{
+/* .cell{
   width: .5rem;
   height: .5rem;
-}
+} */
 
 @media (prefers-color-scheme: light) {
   :root {
