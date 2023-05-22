@@ -1,4 +1,4 @@
-const cols = 50 
+const cols = 50
 const rows = 100
 
 const createMatrix = (cols, rows) => {
@@ -30,33 +30,43 @@ matrix = matrix.map(row => {
 })
 
 const gameContainer = document.getElementById('game')
-const grid = document.createElement('div')
-gameContainer.appendChild(grid)
-
+const grid = document.getElementById('grid')
 
 const render = () => {
-    grid.textContent = ''
-    for (let i = 0; i < cols; i++){
+    for (let i = 0; i < cols; i++) {
         const rowDiv = document.createElement('div')
-        rowDiv.classList.add('flex')
+        rowDiv.classList.add('flex', `row-${i}`)
         grid.appendChild(rowDiv)
-        for (let j = 0; j < rows; j++){
+        for (let j = 0; j < rows; j++) {
             const cell = document.createElement('div')
-            try {
-                
-                if (matrix[i][j] == 1)
-                    cell.classList.add('bg-slate-300', 'rounded-full')
-            } catch (error) {
-                console.log(i,j)
-            }
-                
-            cell.classList.add('cell')
+
+            if (matrix[i][j] == 1)
+                cell.classList.add('bg-slate-300')
+
+            cell.classList.add('cell', `cols-${j}`, 'rounded-full')
             rowDiv.appendChild(cell)
         }
     }
 }
 
 render()
+
+
+
+const update = (previous, descendant) => {
+
+    for(let i = 0; i < cols; i++){
+        for(let j = 0; j < rows; j++){
+
+            if(previous[i][j] != descendant[i][j]){
+                cell = document.querySelector(`.row-${i} :nth-child(${j + 1})`)
+                cell.classList.toggle('bg-slate-300')
+            }
+
+        }
+    }
+
+}
 
 
 let isActive = false
@@ -74,7 +84,7 @@ btn.addEventListener('click', (e) => {
 
 })
 
-const updateGrid = () => {
+const updateMatrix = () => {
     let descendant = createMatrix(cols, rows)
 
     for (let i = 0; i < cols; i++) {
@@ -107,9 +117,10 @@ const play = async () => {
 
     while (isActive) {
         await sleep(1)
-        matrix = updateGrid()
-        render()
+        next = updateMatrix()
+        update(matrix, next)
+        matrix = next
         console.log('att')
-        
+
     }
 }
