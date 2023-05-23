@@ -1,24 +1,27 @@
 <template lang="">
 
     <section class='w-fit m-auto'>
+        <Navbar/>
         
-        <div class="bg-neutral-200 rounded">
+        <div class="bg-neutral-50 rounded">
             
             <div v-for="(row, i) in grid" :key="i" class = 'flex'>
                 <div @click = "grid[i][j] ^= 1" @mouseover = "interaction($event, i, j)"  v-for="(value, j) in row" :key="j"
-                 class = 'cell' :class = "{'bg-neutral-900' : grid[i][j]}"></div>
+                 class = 'cell border border-neutral-200 ' :class = "{'bg-neutral-900' : grid[i][j]}"></div>
             </div>       
         </div>
 
-        <button class="mr-4" v-if="!isActive" @click = "toggle">Start <font-awesome-icon :icon="['fas', 'play']"/></button>
-        <button class="mr-4" v-else @click = toggle>Pause <font-awesome-icon :icon="['fas', 'pause']" /> </button>
-        <button class="m-4" @click = "randomGrid">Randomize <font-awesome-icon :icon="['fas', 'shuffle']" /></button>
-        <button class="m-4" @click = "clear">Clear Grid <font-awesome-icon :icon="['fas', 'eraser']" /></button>
-        <button @click = "get_positions(grid)">log</button>
-        <Oscilators :createMatrix='createMatrix' :cols='cols' :rows='rows' @structure='oscilator => grid = oscilator.matrix'/>
+        <div id="controls" class="grid grid-flow-col gap-10 mt-4 grid-cols-6">
+
+            <button v-if="!isActive" @click = "toggle">Start <font-awesome-icon :icon="['fas', 'play']"/></button>
+            <button v-else @click = toggle>Pause <font-awesome-icon :icon="['fas', 'pause']" /> </button>
+            <button @click = "randomGrid">Randomize <font-awesome-icon :icon="['fas', 'shuffle']" /></button>
+            <button @click = "clear">Clear Grid <font-awesome-icon :icon="['fas', 'eraser']" /></button>
+            <Oscilators :createMatrix='createMatrix' :cols='cols' :rows='rows' @structure='oscilator => grid = oscilator.matrix'/>
+
+        </div>
+
     </section>
-
-
 
 </template>
 
@@ -27,6 +30,7 @@ import Oscilators from './Oscilators.vue';
 import { ref, watch } from 'vue';
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import Navbar from './Navbar.vue';
 import { faPlay, faPause, faShuffle, faEraser, faL } from '@fortawesome/free-solid-svg-icons'
 
 library.add(faPlay, faPause, faShuffle, faEraser)
@@ -95,7 +99,7 @@ const toggle = () => {
 const update = async () => {
 
     while (isActive.value != false) {
-        await sleep(1)
+        await sleep(2)
         grid.value = updateGrid(grid.value)
     }
 }

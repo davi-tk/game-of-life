@@ -1,9 +1,12 @@
 <template lang="">
 
-    <select v-model="selected">
-        <option disabled value="">Select one</option>
-        <option v-for="(item, index) in oscilators" :value="item">{{item.name}}</option>
-    </select>
+    <div>
+        <label for="oscilators">Oscilators</label><br>
+        <select v-model="selected" id="oscilators"> 
+            <option disabled value="">Select one</option>
+            <option v-for="(item, index) in oscilators" :value="item">{{item.name}}</option>
+        </select>
+    </div>
 </template>
 <script setup lang = 'js'>
 import { ref, watch } from 'vue';
@@ -18,6 +21,12 @@ const props = defineProps({
 const blinker = {
     name: 'Blinker',
 } 
+
+const fillMatrix = (matrix, data) => {
+    data.forEach(coord => {
+    matrix[coord[0]][coord[1]] = 1
+    })
+}
 
 const blinkerMatrix = props.createMatrix(props.cols, props.rows)
 
@@ -258,10 +267,7 @@ const pulsar_data = [
 
 ]
 
-pulsar_data.forEach(coord => {
-    pulsarMatrix[coord[0]][coord[1]] = 1
-
-})
+fillMatrix(pulsarMatrix, pulsar_data)
 
 const pulsar = {
     name : 'Pulsar',
@@ -361,14 +367,215 @@ const pentaDecathlonData = [
     ]
 ]
 
-pentaDecathlonData.forEach(coord => {
-    pentaDecathlonMatrix[coord[0]][coord[1]] = 1
-
-})
+fillMatrix(pentaDecathlonMatrix, pentaDecathlonData)
 
 const pentaDecathlon = {
     name : 'Penta Decathlon',
     matrix : pentaDecathlonMatrix
+}
+
+const kokGalaxyMatrix = props.createMatrix(props.cols, props.rows)
+
+const kokGalaxyData = [
+    [
+        21,
+        38
+    ],
+    [
+        21,
+        39
+    ],
+    [
+        21,
+        41
+    ],
+    [
+        21,
+        42
+    ],
+    [
+        21,
+        43
+    ],
+    [
+        21,
+        44
+    ],
+    [
+        21,
+        45
+    ],
+    [
+        21,
+        46
+    ],
+    [
+        22,
+        38
+    ],
+    [
+        22,
+        39
+    ],
+    [
+        22,
+        41
+    ],
+    [
+        22,
+        42
+    ],
+    [
+        22,
+        43
+    ],
+    [
+        22,
+        44
+    ],
+    [
+        22,
+        45
+    ],
+    [
+        22,
+        46
+    ],
+    [
+        23,
+        38
+    ],
+    [
+        23,
+        39
+    ],
+    [
+        24,
+        38
+    ],
+    [
+        24,
+        39
+    ],
+    [
+        24,
+        45
+    ],
+    [
+        24,
+        46
+    ],
+    [
+        25,
+        38
+    ],
+    [
+        25,
+        39
+    ],
+    [
+        25,
+        45
+    ],
+    [
+        25,
+        46
+    ],
+    [
+        26,
+        38
+    ],
+    [
+        26,
+        39
+    ],
+    [
+        26,
+        45
+    ],
+    [
+        26,
+        46
+    ],
+    [
+        27,
+        45
+    ],
+    [
+        27,
+        46
+    ],
+    [
+        28,
+        38
+    ],
+    [
+        28,
+        39
+    ],
+    [
+        28,
+        40
+    ],
+    [
+        28,
+        41
+    ],
+    [
+        28,
+        42
+    ],
+    [
+        28,
+        43
+    ],
+    [
+        28,
+        45
+    ],
+    [
+        28,
+        46
+    ],
+    [
+        29,
+        38
+    ],
+    [
+        29,
+        39
+    ],
+    [
+        29,
+        40
+    ],
+    [
+        29,
+        41
+    ],
+    [
+        29,
+        42
+    ],
+    [
+        29,
+        43
+    ],
+    [
+        29,
+        45
+    ],
+    [
+        29,
+        46
+    ]
+]
+
+fillMatrix(kokGalaxyMatrix, kokGalaxyData)
+
+const kokGalaxy = {
+    name : "Kok's Galaxy",
+    matrix : kokGalaxyMatrix
 }
 
 const oscilators = [
@@ -376,7 +583,8 @@ const oscilators = [
     toad,
     beacon,
     pulsar,
-    pentaDecathlon
+    pentaDecathlon,
+    kokGalaxy
 ]
 
 const selected = ref(0)
