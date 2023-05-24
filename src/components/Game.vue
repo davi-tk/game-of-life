@@ -123,6 +123,7 @@ const log = (matrix) => {
     let matrix = createMatrix(cols, rows)
 
     let grid = ref(matrix)
+    rPentomino()
     let isActive = ref(false)
 
     function sleep(ms) {
